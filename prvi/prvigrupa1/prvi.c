@@ -21,7 +21,7 @@ int main() {
 int pom(int arg) {
 	int count = 0, res = 0;
 
-	while((count++ > 0) ? res = max(res, abs(arg % 10 - arg % 100 / 10)), arg /= 10i: res, arg > 0);
+	while((count++ > 0) ? res = max(res, abs(arg % 10 - arg % 100 / 10)), arg /= 10: res, arg > 0);
 
 	return res;
 }
