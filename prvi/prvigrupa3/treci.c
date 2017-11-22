@@ -10,7 +10,7 @@ int main() {
 			if(i % 2 != 0) {
 				printf("%d", i);
 			}else {
-				if(j % 2 != 0) {	
+				if(j % 4 == 1 || j % 4 == 2) {	
 					printf("%d", i);
 				}else {
 					printf("%d", i + 2);
