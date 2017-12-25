@@ -34,24 +34,34 @@ int main() {
 }
 
 char* napravi(char *s) {
-	int j;
+	int i, j;
 	char arr[SIZE];
-	char *t;
+	char *t, *p;
 
 	t = arr;
 
 	while(*s) {
-		if(*s >= 'A' && *s <= 'F') {
-			for(j = 0; j < 4; j++, t++) {
-				*t = cifre[*s - 'A' + 10][j];
-			}
-		}else {
-			for(j = 0; j < 4; j++, t++) {
-				*t = cifre[*s - '0'][j];
+		for(i = 0; i < 16; i++) {
+			p = s;
+			
+			for(j = 0; j < 4; j++, p++) {
+				if(*p != cifre[i][j]) {
+					break; 					
+				} 		
+
+				if(j == 3) {
+					if(i > 9) {
+						*t = 'A' + i - 10;
+					}else {
+						*t = '0' + i;
+					}
+
+					t++;
+				}
 			}
 		}
 
-		s++;	
+		s += 4;
 	}
 		
 	*t = '\0';

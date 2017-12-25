@@ -17,23 +17,23 @@ int main() {
 
 double fi(int n) {
 	int i;
-	double sum = 0;
-
+	double sum = 0.0;
+	
 	for(i = n; i > 0; i--) {
 		if(i == n) {
-			sum = sqrt(i / 2 + i % 2);
+			sum += sqrt((i / 2 + i % 2));
 		}else {
-			sum = sqrt(i / 2 + i % 2 + sum);
+			sum = sqrt(sum + (i / 2 + i % 2));
 		}
 	}
 
-	return sum;	
+	return sum;
 }
 
 double fr(int i, int n) {
 	if(i == n) {
-		return sqrt(i / 2 + i % 2);	
+		return sqrt((i / 2 + i % 2));
 	}
 
-	return sqrt(i / 2 + i % 2 + fr(i + 1, n));
+	return sqrt((i / 2 + i % 2) + fr(i + 1, n));
 }

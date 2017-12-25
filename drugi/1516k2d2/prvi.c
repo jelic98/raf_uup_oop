@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 double fi(int);
 double fr(int, int);
@@ -16,13 +17,13 @@ int main() {
 
 double fi(int n) {
 	int i;
-	double sum = 0.0;
-	
+	double sum;
+
 	for(i = n; i > 0; i--) {
 		if(i == n) {
-			sum += (i / 2 + i % 2);
+			sum = sqrt(2 * i - 1);
 		}else {
-			sum = 1 / sum + (i / 2 + i % 2);
+			sum = sqrt((2 * i - 1) * (n - i + 1) + sum);
 		}
 	}
 
@@ -31,8 +32,8 @@ double fi(int n) {
 
 double fr(int i, int n) {
 	if(i == n) {
-		return (i / 2 + i % 2);
+		return sqrt(2 * i - 1);	
 	}
 
-	return (i / 2 + i % 2) + 1 / fr(i + 1, n);
+	return sqrt((2 * i - 1) * (n - i + 1) + fr(i + 1, n));	
 }

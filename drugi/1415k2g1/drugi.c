@@ -2,14 +2,26 @@
 
 #define SIZE 100
 
-void ispis(int[][SIZE], int);
+int a[SIZE][SIZE];
+
+void popuni(int);
+void ispis(int);
 
 int main() {
-	int a[SIZE][SIZE];
-	int i, j, n;
+	int n;
 
 	scanf("%d", &n);
 
+	popuni(n);
+
+	ispis(n);
+
+	return 0;
+}
+
+void popuni(int n) {
+	int i, j;
+	
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
 			if(i < n - j) {
@@ -17,22 +29,18 @@ int main() {
 			}else {
 				a[i][j] = n - j;
 			}
-		}
-	}
-
-	ispis(a, n);
-
-	return 0;
+		}	
+	}	
 }
 
-void ispis(int a[][SIZE], int n) {
+void ispis(int n) {
 	int i, j;
-
+	
 	for(i = 0; i < n; i++) {
 		for(j = 0; j < n; j++) {
-			printf("%2d", a[i][j]);
-		}
+			printf("%d", a[i][j]);
+		}	
 
 		printf("\n");
-	}
+	}	
 }

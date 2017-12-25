@@ -16,23 +16,23 @@ int main() {
 
 double fi(int n) {
 	int i;
-	double sum = 0;
-
+	double sum = 0.0;
+	
 	for(i = n; i > 0; i--) {
 		if(i == n) {
-			sum = i / 2 + i % 2;
+			sum += (i / 2 + i % 2);
 		}else {
-			sum = i / 2 + i % 2 + 1 / sum;
+			sum = 1 / sum + (i / 2 + i % 2);
 		}
 	}
 
-	return sum;	
+	return sum;
 }
 
 double fr(int i, int n) {
 	if(i == n) {
-		return i / 2 + i % 2;	
+		return (i / 2 + i % 2);
 	}
 
-	return i / 2 + i % 2 + 1 / fr(i + 1, n);
+	return (i / 2 + i % 2) + 1 / fr(i + 1, n);
 }
