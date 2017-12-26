@@ -6,9 +6,7 @@ double fr(int, int, int);
 int main() {
 	int n, p;
 
-	//scanf("%d%d", &n, &p);
-	n = 6;
-	p = 5;
+	scanf("%d%d", &n, &p);
 
 	printf("%lf\n", fi(n, p));
 	printf("%lf\n", fr(1, n, p));
