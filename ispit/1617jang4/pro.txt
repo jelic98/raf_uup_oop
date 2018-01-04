@@ -1,0 +1,6 @@
+Voce,Jabuka,40.0
+Voce,Kruska,32
+Sport,Lopta,12.34
+Voce,Banana,44.12
+Auto,Ford,250.001
+Auto,Ferari,470
