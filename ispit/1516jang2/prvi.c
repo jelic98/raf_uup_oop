@@ -21,8 +21,6 @@ double funi(int n) {
 	int i;
 
 	for(i = n; i > 0; i--) {
-
-		printf("%d %d\n", fib(i), fib(n - i + 1));
 		sum = sqrt(fib(i) * fib(n - i + 1) + sum);
 	}
 
