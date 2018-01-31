@@ -41,9 +41,20 @@ double funr(int i, int n) {
 }
 
 int fib(int n) {
-	if(n <= 2) {
-		return 1;	
+	if(n <= 0) {
+		return 0;
+	}
+	
+	int f1, f2, i, p;
+
+	f1 = 1;
+	f2 = 1;
+
+	for(i = 2; i < n; i++) {
+		p = f1;
+		f1 += f2;
+		f2 = p;
 	}
 
-	return fib(n - 1) + fib(n - 2);
+	return f1;
 }

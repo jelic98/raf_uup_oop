@@ -35,33 +35,21 @@ void ubaci(Student* koren, Student* cvor) {
 
 	int cmp = strcmp(koren->ime, cvor->ime);
 
+	if(!cmp) {
+		cmp = strcmp(koren->prezime, cvor->prezime);
+	}
+
 	if(cmp < 0) {
 		if(!koren->desno) {
 			koren->desno = cvor;
 		}else {
 			ubaci(koren->desno, cvor);
 		}
-	}else if(cvor > 0) {
+	}else {
 		if(!koren->levo) {
 			koren->levo = cvor;
 		}else {
 			ubaci(koren->levo, cvor);
-		}
-	}else {
-		cmp = strcmp(koren->prezime, cvor->prezime);
-
-		if(cvor <= 0) {	
-			if(!koren->desno) {
-				koren->desno = cvor;
-			}else {
-				ubaci(koren->desno, cvor);
-			}
-		}else {
-			if(!koren->levo) {
-				koren->levo = cvor;
-			}else {
-				ubaci(koren->levo, cvor);
-			}
 		}
 	}
 }
@@ -127,7 +115,7 @@ void snimiFajl() {
 	FILE* out = fopen(s, "w");
 
 	if(!out) {
-		printf("Greska: otvaranje fajla\n");	
+		printf("Greska: Otvaranje fajla\n");	
 		return;
 	}
 	

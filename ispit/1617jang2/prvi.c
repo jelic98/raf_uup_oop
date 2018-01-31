@@ -7,8 +7,7 @@ double funr(int, int, int);
 int main() {
 	int n;
 
-	//scanf("%d", &n);
-	n = 6;
+	scanf("%d", &n);
 
 	printf("%lf\n", funi(n));
 	printf("%lf\n", funr(0, n, 1));
