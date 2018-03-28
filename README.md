@@ -1,3 +1,3 @@
-# RAF Uvod u programiranje
+# RAF Programiranje
 
-Reseni zadaci sa kolokvijuma i ispita iz kurseva "Uvod u programiranje" i "Objektno orijentisano programiranje" na Racunarskom fakultetu.
+Reseni zadaci sa kolokvijuma i ispita iz kurseva *"Uvod u programiranje"* i *"Objektno orijentisano programiranje"* na Racunarskom fakultetu.
