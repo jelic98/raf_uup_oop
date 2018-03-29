@@ -1,6 +1,0 @@
-Pera Peric;12345678;Grcka;28.1.2016;16.2.2016
-Lazar Jelic;87654321;USA;12.12.2012;1.1.2013
-Mika Mikic;3452378;Turska;23.5.2016;11.7.2016
-Uros Prezime;23458;Kina;13.6.2013;15.6.2014
-Djole Djolic;4123;Japan;30.8.2012;14.8.2015
-Brate Mnogo;214148;Svedska;16.2.2011;13.10.2016

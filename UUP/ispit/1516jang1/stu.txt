@@ -1,5 +1,0 @@
-Marko,Markovic,Mreze,9.8
-Petar,Petrovic,Mreze,9.9
-Jovana,Jovanovic,Nauke,8.7
-Lazar,Jelic,Nauke,10.0
-Milica,Milosevic,Mreze,7.54

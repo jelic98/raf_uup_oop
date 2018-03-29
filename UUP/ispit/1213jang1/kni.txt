@@ -1,4 +1,0 @@
-Linearna,Marko Markovic,12345,Izdavac1
-Algebra,Ana Petrovic,54321,Izdavac2
-Geometrija,Petar Jovanovic,13542,Laguna
-Analiticka,Mika Pera,24135,Vulkan

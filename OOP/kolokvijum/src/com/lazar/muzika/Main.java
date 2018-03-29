@@ -1,22 +1,25 @@
 package com.lazar.muzika;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Festival festival = new Festival("EXIT");
 
-        Koncert koncert1 = new Koncert("Samo ljubav", new Date(1, 1, 2018), "Hot Dog");
-        Koncert koncert2 = new Koncert("Rokenrolcina klasicna", new Date(2, 10, 1998), "Brackica");
-        Koncert koncert3 = new Koncert("Nesto chill", new Date(12, 3, 2014), "Kobaja Grande");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
+        Koncert koncert1 = new Koncert("Samo ljubav", format.parse("01.01.2018 12:00"), "Hot Dog");
+        Koncert koncert2 = new Koncert("Rokenrolcina klasicna", format.parse("10.06.1998 15:15"), "Brackica");
+        Koncert koncert3 = new Koncert("Nesto chill", format.parse("01.02.2013 19:59"), "Kobaja Grande");
 
         festival.dodajDogadjaj(koncert1);
         festival.dodajDogadjaj(koncert2);
         festival.dodajDogadjaj(koncert3);
 
-        Turnir turnir = new Turnir("Turnin brate", new Date(5, 10, 2018));
-        Izbor izbor = new Izbor("Eurovision", new Date(10, 5, 2018));
+        Turnir turnir = new Turnir("Turnin brate", format.parse("05.10.2018 06:00"));
+        Izbor izbor = new Izbor("Eurovision", format.parse("10.50.2018 09:05"));
 
         festival.dodajDogadjaj(turnir);
         festival.dodajDogadjaj(izbor);

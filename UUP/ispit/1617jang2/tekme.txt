@@ -1,6 +1,0 @@
-Crvena Zvezda,Partizan,1,1
-Napredak,Partizan,2,31
-Partizan,Crvena Zvezda,0,0
-Partizan,Napredak,3,2
-Napredak,Crvena Zvezda,1,2
-Crvena Zvezda,Napredak,1,2

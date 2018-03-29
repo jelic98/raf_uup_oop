@@ -1,5 +1,0 @@
-Lazar,Jelic,Krusevac,19
-John,Smith,Boston,20
-Lara,Croft,New York,26
-Michael,Jordan,Chicago,53
-Ice,Cube,Krusevac,99

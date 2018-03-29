@@ -1,5 +1,6 @@
 package com.lazar.muzika;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public abstract class Dogadjaj implements Comparable {
@@ -32,9 +33,15 @@ public abstract class Dogadjaj implements Comparable {
     // pozvace se samo ako se radi o anonimnoj klasi
     @Override
     public String toString() {
-        Date datum = getVremePocetka();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getVremePocetka());
 
-        return datum.getDay() + "." + datum.getMonth() + "." + datum.getYear() + " "
-                + datum.getHours() + ":" + datum.getMinutes() + " - " + getNaziv();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        return day + "." + month + "." + year + " " + hour + ":" + minute + " - " + getNaziv();
     }
 }
