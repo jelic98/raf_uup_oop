@@ -1,5 +1,9 @@
 package com.lazar.dvoboj;
 
+/**
+* @author Lazar Jelic - ljelic17@raf.rs
+*/
+
 public class GlavnaKlasa {
 
     public static void main(String[] args) {

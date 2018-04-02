@@ -2,6 +2,10 @@ package com.lazar.softver;
 
 import java.util.ArrayList;
 
+/**
+* @author Lazar Jelic - ljelic17@raf.rs
+*/
+
 public class Test {
 
     public static void main(String[] args) {

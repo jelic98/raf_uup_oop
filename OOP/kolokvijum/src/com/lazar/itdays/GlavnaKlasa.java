@@ -4,6 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+/**
+* @author Lazar Jelic - ljelic17@raf.rs
+*/
+
 public class GlavnaKlasa {
 
     public static void main(String[] args) throws ParseException {

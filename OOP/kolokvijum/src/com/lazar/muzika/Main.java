@@ -3,6 +3,10 @@ package com.lazar.muzika;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+* @author Lazar Jelic - ljelic17@raf.rs
+*/
+
 public class Main {
 
     public static void main(String[] args) throws ParseException {
