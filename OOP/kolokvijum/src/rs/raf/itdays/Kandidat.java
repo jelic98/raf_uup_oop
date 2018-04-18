@@ -30,7 +30,17 @@ public class Kandidat implements Comparable, Test {
     @Override
     public int compareTo(Object o) {
         try {
-            return getBrojPoena() - ((Kandidat) o).getBrojPoena();
+            // sortiranje u opadajucem redosledu po broju poena
+            // onaj koji ima manji broj poena treba da bude posle onog koji ima veci broj poena
+            // ako je prvi "manji" od drugog (tj. ima veci broj poena) onda se vraca -1 i obratno...
+
+            /*
+                return brojPoena > k.brojPoena ? -1 :
+				brojPoena < k.brojPoena ? 1 : 0;
+			*/
+
+            // prosledjujemo u obrnutom redosledu da bi se dobio -1 ako je k.brojPoena manji, tj. ako je this.brojPoena veci
+            return Integer.compare(((Kandidat) o).brojPoena, brojPoena);
         }catch(ClassCastException e) {
             return 0;
         }

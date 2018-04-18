@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
 * @author Lazar Jelic - ljelic17@raf.rs
+* @author Milan Tomic - mtomic@raf.rs (detaljno napisani komentari)
 */
 
 public class GlavnaKlasa {

@@ -69,84 +69,91 @@ public class RacunarskiFakultet {
     }
 
     public void polaganjeTesta() {
-        for(Kandidat k : getPrijavljeniKandidati()) {
+        // svaki kandidat polaze test
+        for (Kandidat k: prijavljeniKandidati) {
             k.polaganjeTesta();
         }
-
-        Collections.sort(getPrijavljeniKandidati());
-
-        for(int i = 0; i < brojMogucihMesta(); i++) {
-            try {
-                getUcesniciKonferencije().add(new Ucesnik(getPrijavljeniKandidati().get(i)));
-            }catch(IndexOutOfBoundsException e) {
-                break;
-            }
+        // sortiramo listu kandidata
+        Collections.sort(prijavljeniKandidati);
+        // odredjivanje broja ucesnika
+        int brojUcesnika = brojMogucihMesta();
+        // dodavanje ucesnika:
+        for (int i = 0; i < brojUcesnika && i < prijavljeniKandidati.size(); i++) {
+            // pravimo ucesnika
+            Ucesnik u = new Ucesnik(prijavljeniKandidati.get(i));
+            // dodajemo ga u listu ucesnika
+            ucesniciKonferencije.add(u);
         }
     }
 
     public void odaberiDogadjaje() {
-        ArrayList<Glasanje> predavanja = (ArrayList<Glasanje>) vratiDogadjajeGlasanje();
-
-        for(Ucesnik u : getUcesniciKonferencije()) {
-            u.glasaj(predavanja);
+        // svaki ucesnik glasa za neki od dogadjaja
+        List<Glasanje> svaGlasanja = vratiDogadjajeGlasanje();
+        for (Ucesnik u : ucesniciKonferencije) {
+            u.glasaj(svaGlasanja);
         }
 
-        Collections.sort(predavanja);
+        // odredjujemo dogadjaje na seminaru tako sto ih sortiramo po broju glasova
+        svaGlasanja.sort(null);
 
-        /* todo
-            1. Na osnovu rezultata glasanja određuju događaji koji će biti na seminaru.
-               Voditi računa o tome da li predavanje zahteva projektor.
+        int ucSaProjektorima = 0;
+        int ucBezProjektora = 0;
+        int ucSaRacunarima = 0;
 
-            2. Za radionice se ne glasa pa se one biraju u onom redosledu u kojem se pojavljuju u listi
-               (prvih onoliko radionica koliko ima učionica sa racunarima)
-        */
+        for (Ucionica uc: ucionice) {
+            if (uc.isSaRacunarima()) {
+                ucSaRacunarima++;
+            } else if (uc.isImaProjektor()) {
+                ucSaProjektorima++;
+            } else {
+                ucBezProjektora++;
+            }
+        }
+
+        ArrayList<Dogadjaj> odabraniDogadjaji = new ArrayList<>();
+
+        for (Dogadjaj d : dogadjaji) {
+            if (d instanceof Radionica && ucSaRacunarima > 0) {
+                ucSaRacunarima--;
+                odabraniDogadjaji.add(d);
+            }
+        }
+
+        for (Glasanje g : svaGlasanja) {
+            Predavanje p = (Predavanje)g;
+            if (p.isPotrebanProjektor() && ucSaProjektorima > 0) {
+                ucSaProjektorima--;
+                odabraniDogadjaji.add(p);
+            } else if (ucBezProjektora > 0) {
+                ucBezProjektora--;
+                odabraniDogadjaji.add(p);
+            } else if (ucSaProjektorima > 0) {
+                ucSaProjektorima--;
+                odabraniDogadjaji.add(p);
+            }
+        }
+
+        dogadjaji.clear();
+        dogadjaji.addAll(odabraniDogadjaji);
     }
 
     public void odstampajDogadjajeIUcesnike() {
-        File out = new File("dogadjaji.txt");
-        PrintWriter writer = null;
-
         try {
-            writer = new PrintWriter(out);
+            PrintWriter pw1 = new PrintWriter(new File("dogadjaji.txt"));
+            PrintWriter pw2 = new PrintWriter(new File("ucesnici.txt"));
 
-            for(Dogadjaj d : getDogadjaji()) {
-                writer.append(d.getNazivDogadjaja());
-                writer.append(", ");
-                writer.append(d.getImePredavaca());
-                writer.append(", ");
-                writer.append(d.getVremePocetka().toString());
-                writer.append(", ");
-                // todo stampaj ucionicu
-                writer.append("\n");
+            for (int i = 0; i < dogadjaji.size(); i++) {
+                pw1.println(dogadjaji.get(i) + " " + ucionice.get(i));
             }
-        }catch(IOException e) {
+
+            for (Ucesnik u : ucesniciKonferencije) {
+                pw2.println(u.toString());
+            }
+
+            pw1.close();
+            pw2.close();
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(writer != null) {
-                writer.flush();
-                writer.close();
-            }
-        }
-
-        out = new File("ucesnici.txt");
-        writer = null;
-
-        try {
-            writer = new PrintWriter(out);
-
-            for(Ucesnik u : getUcesniciKonferencije()) {
-                writer.append(u.getImeIPrezime());
-                writer.append(", ");
-                writer.append(u.getKategorijaUcesnika().toString());
-                writer.append("\n");
-            }
-        }catch(IOException e) {
-            e.printStackTrace();
-        }finally {
-            if(writer != null) {
-                writer.flush();
-                writer.close();
-            }
         }
     }
 }

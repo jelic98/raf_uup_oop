@@ -11,6 +11,7 @@ public class Ucesnik {
     public Ucesnik(Kandidat kandidat) {
         this.imeIPrezime = kandidat.getImeIPrezime();
 
+        // equalsIgnoreCase poredi stringove ne obracajuci paznju na velika i mala slova
         if(kandidat.getGrad().equalsIgnoreCase("beograd")) {
             kategorijaUcesnika = KategorijaUcesnika.DOMACI;
         }else {

@@ -29,7 +29,8 @@ public class Predavanje extends Dogadjaj implements Glasanje {
     @Override
     public int compareTo(Object o) {
         try {
-            return getBrojGlasova() - ((Predavanje) o).getBrojGlasova();
+            // sortiranje u opadajucem redosledu po broju glasova
+            return Integer.compare(((Predavanje) o).brojGlasova, brojGlasova);
         }catch(ClassCastException e) {
             return 0;
         }

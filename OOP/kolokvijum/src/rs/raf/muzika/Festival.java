@@ -29,35 +29,35 @@ public class Festival {
     }
 
     public void odrziGlasanje() {
-        Random random = new Random();
-
-        ArrayList<Takmicenje> takmicenja = new ArrayList<>();
-        ArrayList<Koncert> koncerti = new ArrayList<>();
-
-        for(Dogadjaj d : dogadjaji) {
-            if(d instanceof Takmicenje) {
-                takmicenja.add((Takmicenje) d);
-            }else if(d instanceof Koncert) {
-                koncerti.add((Koncert) d);
-            }
-        }
-
-        for(Takmicenje t : takmicenja) {
-            for(Ucesnik u : t.getUcesnici()) {
-                for(Koncert k : koncerti) {
-                    if(random.nextInt(100) < 20) {
-                        k.dodajGlas();
-                    }
-                }
-
-                for(Takmicenje k : takmicenja) {
-                    if(!(k instanceof Izbor)) {
-                        continue;
-                    }
-
-                    for(Ucesnik ucesnik : t.getUcesnici()) {
-                        if(!u.equals(ucesnik) && random.nextInt(100) < 30) {
-                            ucesnik.dodajGlas();
+        Random r = new Random();
+        // prolazimo kroz sve dogadjaje
+        // samo takmicenja imaju ucesnike (koji glasaju)
+        for (Dogadjaj d : dogadjaji) {
+            if (d instanceof Takmicenje) {
+                Takmicenje t = (Takmicenje) d;
+                // svaki ucesnik moze da glasa
+                for (Ucesnik u : t.getUcesnici()) {
+                    // prolazi kroz sve dogadjaje
+                    // ako na tom dogadjaju moze da se glasa
+                    // onda glasa
+                    for (Dogadjaj d1 : dogadjaji) {
+                        // ako je koncert, glasace za njega
+                        // sa verovatnocom 0.2
+                        if (d1 instanceof Koncert) {
+                            // vratice broj od 0-1 za koji postoji
+                            // 0.2 sansa da ce biti manji od 0.2
+                            if (r.nextDouble() < 0.2) {
+                                ((Koncert) d1).dodajGlas();
+                            }
+                        }
+                        // ako je izborno takmicenje
+                        // za neke od ucesnika glasa sa verovatnocom 0.3
+                        else if (d1 instanceof Izbor) {
+                            for (Ucesnik u1 : ((Izbor) d1).getUcesnici()) {
+                                if (r.nextDouble() < 0.3) {
+                                    u1.dodajGlas();
+                                }
+                            }
                         }
                     }
                 }
@@ -72,6 +72,8 @@ public class Festival {
         try {
             writer = new PrintWriter(out);
 
+            // soritramo dogadjaje u prirodnom poretku
+            // koji je implementiran pomocu Comparable interfejsa
             Collections.sort(dogadjaji);
 
             for(Dogadjaj d : dogadjaji) {

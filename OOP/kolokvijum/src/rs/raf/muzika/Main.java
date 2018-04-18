@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 
 /**
 * @author Lazar Jelic - ljelic17@raf.rs
+* @author Milan Tomic - mtomic@raf.rs (detaljno napisani komentari)
 */
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
         festival.dodajDogadjaj(koncert2);
         festival.dodajDogadjaj(koncert3);
 
-        Turnir turnir = new Turnir("Turnin brate", format.parse("05.10.2018 06:00"));
+        Turnir turnir = new Turnir("Turnir brate", format.parse("05.10.2018 06:00"));
         Izbor izbor = new Izbor("Eurovision", format.parse("10.50.2018 09:05"));
 
         festival.dodajDogadjaj(turnir);
