@@ -6,24 +6,15 @@ void ispis(int[][SIZE], int);
 
 int main() {
 	int n, i, j, p, diff, count;
-	int a[SIZE][SIZE] = {
-		{1,4,5,6,7},	
-		{5,6,7,8,9},	
-		{8,9,4,3,2},	
-		{9,4,1,3,7},	
-		{8,6,6,4,1}	
-	};
+	int a[SIZE][SIZE];
 
-	//scanf("%d", &n);
-	n = 5;
+	scanf("%d", &n);
 
-	//for(i = 0; i < n; i++) {
-	//	for(j = 0; j < n; j++) {
-	//		scanf("%d", &a[i][j]);
-	//	}	
-	//}
-
-	count = 1;
+	for(i = 0; i < n; i++) {
+		for(j = 0; j < n; j++) {
+			scanf("%d", &a[i][j]);
+		}	
+	}
 
 	ispis(a, n);
 	printf("\n");

@@ -5,14 +5,7 @@
 void modifikuj(int[SIZE][SIZE], int[SIZE][SIZE], int);
 
 int main() {
-	int b[SIZE][SIZE], a[SIZE][SIZE] = {
-	{2, 3, 5, 2, 1},
-	{3, 5, 1, 2, 1},
-	{1, 2, 2, 5, 3},
-	{7, 3, 2, 5, 4},
-	{1, 3, 3, 1, 5}
-	};
-
+	int b[SIZE][SIZE], a[SIZE][SIZE];
 	int i, n, j;
 
 	scanf("%d", &n);
