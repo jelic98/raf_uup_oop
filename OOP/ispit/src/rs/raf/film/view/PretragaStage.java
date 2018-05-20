@@ -120,12 +120,6 @@ public final class PretragaStage extends AbstractStage {
             }
         });
         tvFilmovi.setItems(FXCollections.observableArrayList(filmovi));
-        tvFilmovi.getItems().addListener(new ListChangeListener<Film>() {
-            @Override
-            public void onChanged(Change<? extends Film> c) {
-                tvFilmovi.refresh();
-            }
-        });
 
         Button btnOceni = new Button("Oceni");
         btnOceni.setOnAction(new EventHandler<ActionEvent>() {

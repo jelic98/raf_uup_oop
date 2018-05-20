@@ -36,13 +36,12 @@ public final class RevizijaStage extends AbstractStage {
         taKomentar = new TextArea();
         taKomentar.setPrefColumnCount(12);
         taKomentar.setPrefRowCount(2);
-
-        initModality(Modality.APPLICATION_MODAL);
     }
 
     @Override
     protected Scene prikazi() {
         setAlwaysOnTop(true);
+        initModality(Modality.APPLICATION_MODAL);
 
         VBox vbInfo = new VBox(10);
         vbInfo.setPadding(new Insets(25, 20, 0, 20));
