@@ -1,17 +1,19 @@
+/*
+	Maintainer:
+ 		Lazar Jelic	(https://github.com/jelic98)
+
+	TODO:
+		- Add NULL checkers
+		- Make union Value to act like a wrapper for non-int values
+*/
+
+#ifndef H_LIST_INCLUDE
+#define H_LIST_INCLUDE
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #define ARR_SIZE 100
-
-/*
-	Maintainer:
- 		Lazar Jelic
- 		https://github.com/jelic98
-
-	Todo:
-		- Add NULL checkers
-		- Make struct Value to act like wrapper for non-int values
-*/
 
 typedef enum Order {
 	ASC,
@@ -102,18 +104,7 @@ char* toString(Node*);
 Node* read(Node*);
 void write(Node*);
 
-// Example
-int main() {
-    Node* list = NULL;
-
-	list = read(list);
-
-	list = rotateRight(addAllAfter(list, toArray(list), getByIndex(list, 1)), 2);
-
-	write(list);
-
-    return 0;
-}
+#ifdef H_LIST_IMPLEMENT
 
 Node* createNode(int value) {
     Node* node = (Node*) malloc(sizeof(Node));
@@ -340,7 +331,7 @@ Node* removeStart(Node* root) {
 
 	free(root);
 
-	return tmp;
+	return root;
 }
 
 Node* removeEnd(Node* root) {
@@ -472,6 +463,9 @@ Node* clear(Node* root) {
 		tmp = root->next;
 
 		free(root);
+
+		root->value = 0;
+		root->next = NULL;
 
 		root = tmp;
 	}
@@ -700,51 +694,6 @@ int getLastOccurrenceIndex(Node* root, int value) {
 	return occurrence;
 }
 
-int size(Node* root) {
-	int size = 0;
-
-	while(root) {
-		size++;
-		root = root->next;
-	}
-
-	return size;
-}
-
-int contains(Node* root, int value) {
-	while(root) {
-		if(root->value == value) {
-			return 1;	
-		}	
-
-		root = root->next;
-	}
-
-	return 0;
-}
-
-int count(Node* root, int value) {
-	int count = 0;
-
-	while(root) {
-		if(root->value == value) {
-			count++;	
-		}
-
-		root = root->next;
-	}
-
-	return count;
-}
-
-int hasNext(Node* root) {
-	if(root && root->next) {
-		return 1;
-	}
-
-	return 0;	
-}
-
 Node* set(Node* root, int value) {
 	root->value = value;
 
@@ -852,6 +801,51 @@ Node* cloneRange(Node* root, int start, int end) {
 	return newRoot;
 }
 
+int size(Node* root) {
+	int size = 0;
+
+	while(root) {
+		size++;
+		root = root->next;
+	}
+
+	return size;
+}
+
+int contains(Node* root, int value) {
+	while(root) {
+		if(root->value == value) {
+			return 1;	
+		}	
+
+		root = root->next;
+	}
+
+	return 0;
+}
+
+int count(Node* root, int value) {
+	int count = 0;
+
+	while(root) {
+		if(root->value == value) {
+			count++;	
+		}
+
+		root = root->next;
+	}
+
+	return count;
+}
+
+int hasNext(Node* root) {
+	if(root && root->next) {
+		return 1;
+	}
+
+	return 0;	
+}
+
 int isSame(Node* first, Node* second) {
 	while(1) {
 		if(!first && !second) {
@@ -890,7 +884,7 @@ int* toArray(Node* root) {
 	int i = 0;
 	int* arr;
 
-	arr = (int*) malloc(ARR_SIZE * sizeof(arr));
+	arr = (int*) malloc(ARR_SIZE * sizeof(int));
 
 	if(!arr) {
 		printf("Out of memory\n");
@@ -911,7 +905,7 @@ char* toString(Node* root) {
 	
 	char* s;
 
-	s = (char*) malloc(ARR_SIZE * sizeof(s));
+	s = (char*) malloc(ARR_SIZE * sizeof(char));
 	
 	if(!s) {
 		printf("Out of memory\n");
@@ -933,7 +927,7 @@ char* toString(Node* root) {
 	return s;
 }
 
-Node* read(Node* list) {
+Node* read(Node* root) {
     int value;
 
     while(1) {
@@ -943,17 +937,20 @@ Node* read(Node* list) {
             break;
         }
 
-        list = addToEnd(list, createNode(value));
+        root = addToEnd(root, createNode(value));
     }
 
-    return list;
+    return root;
 }
 
-void write(Node* list) {
-	while(list) {
-        printf("%d ", list->value);
-		list = list->next;
+void write(Node* root) {
+	while(root) {
+        printf("%d ", root->value);
+		root = root->next;
     }
 
     printf("\n");
 }
+
+#endif
+#endif
