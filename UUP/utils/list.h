@@ -15,14 +15,11 @@
 
 #define ARR_SIZE 100
 
-typedef enum Order {
-	ASC,
-	DESC
-} Order;
+typedef enum Order { ASC, DESC } Order;
 
 typedef struct Node {
-    int value;
-    struct Node *next;
+	int value;
+	struct Node* next;
 } Node;
 
 // Creation
@@ -31,7 +28,9 @@ Node* createNode(int);
 // Addition
 Node* addToStart(Node*, Node*);
 Node* addToEnd(Node*, Node*);
+Node* addToEndRecursively(Node*, Node*);
 Node* addToIndex(Node*, Node*, int);
+Node* addToIndexRecursively(Node*, Node*, int);
 Node* addAfter(Node*, Node*, Node*);
 Node* addSorted(Node*, Node*, Order);
 Node* addAllToStart(Node*, int*);
@@ -57,6 +56,7 @@ Node* removeDuplicates(Node*);
 
 // Clearing
 Node* clear(Node*);
+Node* clearRecursively(Node*);
 Node* clearFrom(Node*, Node*);
 Node* clearFromIndex(Node*, int);
 Node* clearToIndex(Node*, int);
@@ -67,6 +67,7 @@ Node* sort(Node*, Order);
 Node* rotateLeft(Node*, int);
 Node* rotateRight(Node*, int);
 Node* reverse(Node*);
+Node* reverseRecursively(Node*);
 
 // Getters
 Node* getStart(Node*);
@@ -107,75 +108,96 @@ void write(Node*);
 #ifdef H_LIST_IMPLEMENT
 
 Node* createNode(int value) {
-    Node* node = (Node*) malloc(sizeof(Node));
-	
+	Node* node = (Node*) malloc(sizeof(Node));
+
 	if(!node) {
 		printf("Out of memory\n");
-		return node;	
+		return node;
 	}
-    
-	node->value = value;
-    node->next = NULL;
 
-    return node;
+	node->value = value;
+	node->next = NULL;
+
+	return node;
 }
 
 Node* addToStart(Node* root, Node* node) {
-    if(root) {
-        node->next = root;
-    }
+	if(root) {
+		node->next = root;
+	}
 
-    return node;
+	return node;
 }
 
 Node* addToEnd(Node* root, Node* node) {
-    if(root) {
-        Node* tmp = root;
+	if(root) {
+		Node* tmp = root;
 
-        while(tmp->next) {
-            tmp = tmp->next;
-        }
+		while(tmp->next) {
+			tmp = tmp->next;
+		}
 
-        tmp->next = node;
+		tmp->next = node;
 
-        return root;
-    }else {
-        return node;
-    }
+		return root;
+	} else {
+		return node;
+	}
+}
+
+Node* addToEndRecursively(Node* root, Node* node) {
+	if(!root) {
+		return node;
+	} else {
+		root->next = addToEndRecursively(root->next, node);
+	}
+
+	return root;
 }
 
 Node* addToIndex(Node* root, Node* node, int index) {
 	if(root) {
-        Node* tmp = root;
+		Node* tmp = root;
 
 		if(index) {
 			while(tmp->next && --index > 0) {
-            	tmp = tmp->next;
-       	 	}
+				tmp = tmp->next;
+			}
 
 			node->next = tmp->next;
 			tmp->next = node;
-		}else {
+		} else {
 			root = addToStart(root, node);
 		}
 
 		return root;
-    }else {
-        return node;
-    }
+	} else {
+		return node;
+	}
+}
+
+Node* addToIndexRecursively(Node* root, Node* node, int index) {
+	if(root && --index > 0) {
+		root->next = addToIndexRecursively(root->next, node, index);
+	} else {
+		node->next = root;
+		return node;
+	}
+
+	return root;
 }
 
 Node* addAfter(Node* root, Node* value, Node* node) {
 	Node* tmp = value;
-	
-	if(root && node) {	
+
+	if(root && node) {
 		if(tmp) {
 			tmp->next = node->next;
 			node->next = tmp;
 		}
-		
+
 		return root;
-	}else {
+	} else {
 		return tmp;
 	}
 }
@@ -183,23 +205,22 @@ Node* addAfter(Node* root, Node* value, Node* node) {
 Node* addSorted(Node* root, Node* node, Order order) {
 	Node* tmp = root;
 
-	if((tmp->value >= node->value && order == ASC)
-		|| (tmp->value <= node->value && order == DESC)) {
-			node->next = tmp;
-			return node;
+	if((tmp->value >= node->value && order == ASC) || (tmp->value <= node->value && order == DESC)) {
+		node->next = tmp;
+		return node;
 	}
 
 	while(tmp) {
 		if(tmp->next) {
-			if((tmp->next->value >= node->value && order == ASC)
-				|| (tmp->next->value <= node->value && order == DESC)) {
+			if((tmp->next->value >= node->value && order == ASC) ||
+			   (tmp->next->value <= node->value && order == DESC)) {
 				node->next = tmp->next;
 				tmp->next = node;
 				break;
 			}
-			
-			tmp = tmp->next;	
-		}else {
+
+			tmp = tmp->next;
+		} else {
 			tmp->next = node;
 			break;
 		}
@@ -212,7 +233,7 @@ Node* addAllToStart(Node* root, int* values) {
 	while(*values) {
 		root = addToStart(root, createNode(*values++));
 	}
-	
+
 	return root;
 }
 
@@ -226,24 +247,24 @@ Node* addAllToEnd(Node* root, int* values) {
 
 Node* addAllToIndex(Node* root, int* values, int index) {
 	while(*values) {
-		root = addToIndex(root, createNode(*values++), index++);	
+		root = addToIndex(root, createNode(*values++), index++);
 	}
-	
+
 	return root;
 }
 
 Node* addAllAfter(Node* root, int* values, Node* node) {
 	while(*values && node) {
-		root = addAfter(root, createNode(*values++), node);	
+		root = addAfter(root, createNode(*values++), node);
 		node = node->next;
 	}
-	
+
 	return root;
 }
 
 Node* addAllSorted(Node* root, int* values, Order order) {
 	while(*values) {
-		root = addSorted(root, createNode(*values++), order);	
+		root = addSorted(root, createNode(*values++), order);
 	}
 
 	return root;
@@ -251,13 +272,13 @@ Node* addAllSorted(Node* root, int* values, Order order) {
 
 Node* addAllNodesToStart(Node* root, Node* values) {
 	Node* tmp = values;
-	
+
 	while(tmp->next) {
 		tmp = tmp->next;
 	}
 
 	tmp->next = root;
-	
+
 	return values;
 }
 
@@ -267,7 +288,7 @@ Node* addAllNodesToEnd(Node* root, Node* values) {
 
 Node* addAllNodesToIndex(Node* root, Node* values, int index) {
 	if(!index) {
-		return addAllNodesToStart(root, values); 	
+		return addAllNodesToStart(root, values);
 	}
 
 	Node* prev = root;
@@ -285,7 +306,7 @@ Node* addAllNodesToIndex(Node* root, Node* values, int index) {
 	}
 
 	values->next = next;
-	
+
 	return root;
 }
 
@@ -299,7 +320,7 @@ Node* addAllNodesAfter(Node* root, Node* values, Node* node) {
 
 	next = prev->next;
 	prev->next = values;
-	
+
 	while(values->next) {
 		values = values->next;
 	}
@@ -310,19 +331,19 @@ Node* addAllNodesAfter(Node* root, Node* values, Node* node) {
 }
 
 Node* addAllNodesSorted(Node* root, Node* values, Order order) {
-	Node* tmp = NULL; 
-	
+	Node* tmp = NULL;
+
 	root = sort(root, order);
 
 	while(values) {
 		tmp = values->next;
 		values->next = NULL;
 
-		root = addSorted(root, values, order);	
-		
+		root = addSorted(root, values, order);
+
 		values = tmp;
 	}
-	
+
 	return root;
 }
 
@@ -346,7 +367,7 @@ Node* removeEnd(Node* root) {
 
 	if(prev) {
 		prev->next = NULL;
-	}else {
+	} else {
 		root = NULL;
 	}
 
@@ -354,57 +375,57 @@ Node* removeEnd(Node* root) {
 }
 
 Node* removeByValue(Node* root, int value) {
-    Node* tmp = root;
-    Node* prev = NULL;
+	Node* tmp = root;
+	Node* prev = NULL;
 
-    while(tmp) {
-        if(tmp->value == value) {
+	while(tmp) {
+		if(tmp->value == value) {
 			if(prev) {
-            	prev->next = tmp->next;
+				prev->next = tmp->next;
 
 				free(tmp);
 
 				tmp = prev->next;
-			}else {
+			} else {
 				root = tmp->next;
 
 				free(tmp);
 
 				tmp = root;
 			}
-        }else {
-        	tmp = (prev = tmp)->next;
+		} else {
+			tmp = (prev = tmp)->next;
 		}
-    }
+	}
 
-    return root;
+	return root;
 }
 
 Node* removeByIndex(Node* root, int index) {
 	Node* tmp = root;
-    Node* prev = NULL;
+	Node* prev = NULL;
 
-    while(tmp && index-- > 0) {
-        tmp = (prev = tmp)->next;
-    }
+	while(tmp && index-- > 0) {
+		tmp = (prev = tmp)->next;
+	}
 
 	if(prev) {
 		prev->next = tmp->next;
 
 		free(tmp);
-	}else {
+	} else {
 		root = tmp->next;
-		
+
 		free(tmp);
 	}
 
-    return root;
+	return root;
 }
 
 Node* removeNext(Node* root, Node* node) {
 	if(node && node->next) {
 		Node* tmp = node->next->next;
-	
+
 		free(node->next);
 
 		node->next = tmp;
@@ -415,7 +436,7 @@ Node* removeNext(Node* root, Node* node) {
 
 Node* removeFirstOccurrence(Node* root, int value) {
 	int index = getFirstOccurrenceIndex(root, value);
-	
+
 	if(index == -1) {
 		return root;
 	}
@@ -425,7 +446,7 @@ Node* removeFirstOccurrence(Node* root, int value) {
 
 Node* removeLastOccurrence(Node* root, int value) {
 	int index = getLastOccurrenceIndex(root, value);
-	
+
 	if(index == -1) {
 		return root;
 	}
@@ -435,21 +456,21 @@ Node* removeLastOccurrence(Node* root, int value) {
 
 Node* removeDuplicates(Node* root) {
 	Node* tmp = root;
-	
-	while(tmp){
+
+	while(tmp) {
 		Node* curr = tmp->next;
 		Node* prev = tmp;
 
 		while(curr) {
-			if(curr->value == tmp->value){
+			if(curr->value == tmp->value) {
 				prev->next = curr->next;
-			}else {
+			} else {
 				prev = curr;
 			}
-	
+
 			curr = curr->next;
 		}
-		
+
 		tmp = tmp->next;
 	}
 
@@ -459,7 +480,7 @@ Node* removeDuplicates(Node* root) {
 Node* clear(Node* root) {
 	Node* tmp = NULL;
 
-	while(root) {	
+	while(root) {
 		tmp = root->next;
 
 		free(root);
@@ -473,9 +494,21 @@ Node* clear(Node* root) {
 	return root;
 }
 
+Node* clearRecursively(Node* root) {
+	if(!root) {
+		return root;
+	}
+
+	Node* tmp = root->next;
+
+	free(root);
+
+	return clearRecursively(tmp);
+}
+
 Node* clearFrom(Node* root, Node* node) {
 	Node* tmp = root;
-	
+
 	if(tmp != node) {
 		while(tmp && tmp->next != node) {
 			tmp = tmp->next;
@@ -485,7 +518,7 @@ Node* clearFrom(Node* root, Node* node) {
 	clear(node);
 
 	tmp->next = NULL;
-	
+
 	return root;
 }
 
@@ -496,7 +529,7 @@ Node* clearFromIndex(Node* root, int index) {
 
 	if(prev) {
 		prev->next = NULL;
-	}else {
+	} else {
 		root = NULL;
 	}
 
@@ -535,7 +568,7 @@ Node* clearRange(Node* root, int start, int end) {
 
 	if(prev) {
 		prev->next = tmp;
-	}else {
+	} else {
 		root = tmp;
 	}
 
@@ -551,8 +584,7 @@ Node* sort(Node* root, Order order) {
 		curr = tmp->next;
 
 		while(curr) {
-			if((curr->value < tmp->value && order == ASC)
-				|| (curr->value > tmp->value && order == DESC)) {
+			if((curr->value < tmp->value && order == ASC) || (curr->value > tmp->value && order == DESC)) {
 				p = tmp->value;
 				tmp->value = curr->value;
 				curr->value = p;
@@ -581,48 +613,60 @@ Node* rotateLeft(Node* root, int offset) {
 }
 
 Node* rotateRight(Node* root, int offset) {
-    Node* tmp = root;
+	Node* tmp = root;
 
-    int len = 0;
+	int len = 0;
 
-    while(tmp->next){
-        tmp = tmp->next;
-        len++;
-    }
+	while(tmp->next) {
+		tmp = tmp->next;
+		len++;
+	}
 
-    tmp->next=root;
+	tmp->next = root;
 
-    int preLen = len - offset % len;
+	int preLen = len - offset % len;
 
-    Node *pre = root;
+	Node* pre = root;
 
-    while(preLen--) {
-        pre = pre->next;
-    }
+	while(preLen--) {
+		pre = pre->next;
+	}
 
-    root = pre->next;
-    pre->next = NULL;
+	root = pre->next;
+	pre->next = NULL;
 
-    return root;
+	return root;
 }
 
 Node* reverse(Node* root) {
 	root = clone(root);
 
-    Node* tmp = root;
+	Node* tmp = root;
 	Node* prev = NULL;
-    Node* next = NULL;
+	Node* next = NULL;
 
-    while(tmp) {
-        next = tmp->next;
-        tmp->next = prev;
-        prev = tmp;
-        tmp = next;
-    }
+	while(tmp) {
+		next = tmp->next;
+		tmp->next = prev;
+		prev = tmp;
+		tmp = next;
+	}
 
 	root = prev;
 
 	return root;
+}
+
+Node* reverseRecursively(Node* root) {
+	if(!root->next) {
+		return root;
+	}
+
+	Node* node = reverseRecursively(root->next);
+	root->next->next = root;
+	root->next = NULL;
+
+	return node;
 }
 
 Node* getStart(Node* root) {
@@ -646,15 +690,15 @@ Node* getByIndex(Node* root, int index) {
 		while(root->next && --index >= 0) {
 			root = root->next;
 		}
-	}else {
+	} else {
 		root = NULL;
 	}
-	
+
 	if(index > 0) {
-		root = NULL;	
+		root = NULL;
 	}
 
-	return root;			
+	return root;
 }
 
 Node* getNext(Node* root) {
@@ -709,25 +753,25 @@ Node* setAtIndex(Node* root, int index, int value) {
 
 Node* clone(Node* root) {
 	Node* newRoot = NULL;
-	
+
 	if(root) {
 		newRoot = createNode(root->value);
 		Node* tmp = newRoot;
-		
+
 		root = root->next;
 
 		while(root) {
 			tmp = tmp->next = createNode(root->value);
-			
+
 			root = root->next;
 		}
-	}	
+	}
 
 	return newRoot;
 }
 
 Node* cloneSingle(Node* node) {
-	return createNode(node->value);	
+	return createNode(node->value);
 }
 
 Node* cloneFrom(Node* root, Node* node) {
@@ -751,7 +795,7 @@ Node* cloneTo(Node* root, Node* node) {
 		}
 	}
 
-	return newRoot;	
+	return newRoot;
 }
 
 Node* cloneFromIndex(Node* root, int index) {
@@ -763,14 +807,14 @@ Node* cloneToIndex(Node* root, int index) {
 	Node* tmp = NULL;
 
 	while(root->next && index-- > 0) {
-		if(newRoot) {	
+		if(newRoot) {
 			tmp->next = cloneSingle(root);
 			tmp = tmp->next;
-		}else {
+		} else {
 			newRoot = cloneSingle(root);
 			tmp = newRoot;
 		}
-		
+
 		root = root->next;
 	}
 
@@ -790,7 +834,7 @@ Node* cloneRange(Node* root, int start, int end) {
 		if(newRoot) {
 			tmp->next = cloneSingle(root);
 			tmp = tmp->next;
-		}else {
+		} else {
 			newRoot = cloneSingle(root);
 			tmp = newRoot;
 		}
@@ -815,8 +859,8 @@ int size(Node* root) {
 int contains(Node* root, int value) {
 	while(root) {
 		if(root->value == value) {
-			return 1;	
-		}	
+			return 1;
+		}
 
 		root = root->next;
 	}
@@ -829,7 +873,7 @@ int count(Node* root, int value) {
 
 	while(root) {
 		if(root->value == value) {
-			count++;	
+			count++;
 		}
 
 		root = root->next;
@@ -843,19 +887,19 @@ int hasNext(Node* root) {
 		return 1;
 	}
 
-	return 0;	
+	return 0;
 }
 
 int isSame(Node* first, Node* second) {
 	while(1) {
 		if(!first && !second) {
-			return 1;	
-		}else if((first && !second) || (!first && second)) {
+			return 1;
+		} else if((first && !second) || (!first && second)) {
 			return 0;
-		}else if(first->value != second->value) {
+		} else if(first->value != second->value) {
 			return 0;
 		}
-	
+
 		first = first->next;
 		second = second->next;
 	}
@@ -888,7 +932,7 @@ int* toArray(Node* root) {
 
 	if(!arr) {
 		printf("Out of memory\n");
-		return arr;	
+		return arr;
 	}
 
 	while(root) {
@@ -902,14 +946,14 @@ int* toArray(Node* root) {
 
 char* toString(Node* root) {
 	int i = 0;
-	
+
 	char* s;
 
 	s = (char*) malloc(ARR_SIZE * sizeof(char));
-	
+
 	if(!s) {
 		printf("Out of memory\n");
-		return s;	
+		return s;
 	}
 
 	while(root) {
@@ -923,33 +967,33 @@ char* toString(Node* root) {
 	}
 
 	s[i - 2] = '\0';
-	
+
 	return s;
 }
 
 Node* read(Node* root) {
-    int value;
+	int value;
 
-    while(1) {
-        scanf("%d", &value);
+	while(1) {
+		scanf("%d", &value);
 
-        if(value == 0) {
-            break;
-        }
+		if(value == 0) {
+			break;
+		}
 
-        root = addToEnd(root, createNode(value));
-    }
+		root = addToEnd(root, createNode(value));
+	}
 
-    return root;
+	return root;
 }
 
 void write(Node* root) {
 	while(root) {
-        printf("%d ", root->value);
+		printf("%d ", root->value);
 		root = root->next;
-    }
+	}
 
-    printf("\n");
+	printf("\n");
 }
 
 #endif
